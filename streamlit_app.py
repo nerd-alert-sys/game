@@ -5,87 +5,77 @@ import random
 # Page Configuration
 # -----------------------------
 st.set_page_config(
-    page_title="Truth or Dare 🎭",
+    page_title="Truth or Dare - 2 Player",
     page_icon="🎭",
-    layout="centered"
+    layout="wide"
 )
 
 # -----------------------------
-# Data
+# Game Data (Question, Difficulty, Points)
 # -----------------------------
 TRUTHS = [
-    "What is your biggest fear?",
-    "Have you ever lied to your best friend?",
-    "What is the most embarrassing thing that has happened to you?",
-    "Who was your first crush?",
-    "What secret have you never told anyone?",
-    "What is the worst habit you have?",
-    "Have you ever cheated on a test?",
-    "What is something you regret?",
-    "Who do you text the most?",
-    "What is your biggest insecurity?"
+    {"text": "What is your biggest fear?", "difficulty": "Easy", "points": 5},
+    {"text": "Have you ever lied to your best friend?", "difficulty": "Easy", "points": 5},
+    {"text": "What is your most embarrassing moment?", "difficulty": "Medium", "points": 10},
+    {"text": "What secret have you never told anyone?", "difficulty": "Hard", "points": 20},
+    {"text": "What is your biggest regret?", "difficulty": "Hard", "points": 20},
 ]
 
 DARES = [
-    "Do 10 push-ups.",
-    "Sing a song out loud.",
-    "Do your best dance move for 15 seconds.",
-    "Send a funny emoji to someone in your contacts.",
-    "Speak in a funny accent for the next 2 minutes.",
-    "Take a selfie with a silly face.",
-    "Do 20 jumping jacks.",
-    "Pretend to be an animal for 30 seconds.",
-    "Say the alphabet backwards.",
-    "Clap your hands above your head for 30 seconds."
+    {"text": "Do 10 push-ups.", "difficulty": "Easy", "points": 5},
+    {"text": "Sing a song out loud.", "difficulty": "Easy", "points": 5},
+    {"text": "Dance for 30 seconds.", "difficulty": "Medium", "points": 10},
+    {"text": "Speak in an accent for 2 minutes.", "difficulty": "Medium", "points": 10},
+    {"text": "Do 30 jumping jacks.", "difficulty": "Hard", "points": 20},
 ]
 
 # -----------------------------
 # Session State Initialization
 # -----------------------------
-if "current_prompt" not in st.session_state:
-    st.session_state.current_prompt = ""
+for key in [
+    "p1_score", "p2_score",
+    "p1_card", "p2_card"
+]:
+    if key not in st.session_state:
+        st.session_state[key] = 0 if "score" in key else None
 
-if "current_type" not in st.session_state:
-    st.session_state.current_type = ""
+# -----------------------------
+# Helper Function
+# -----------------------------
+def draw_card(card_type):
+    if card_type == "Truth":
+        return random.choice(TRUTHS)
+    else:
+        return random.choice(DARES)
 
 # -----------------------------
 # UI
 # -----------------------------
-st.title("🎭 Truth or Dare Game")
-st.markdown("Choose **Truth** or **Dare** and let the fun begin! 😄")
+st.title("🎭 Truth or Dare — 2 Player Game with Points")
+st.markdown("Complete the challenge to **earn points** ⭐")
 
 st.divider()
 
-# Buttons
+# -----------------------------
+# Player Panels
+# -----------------------------
 col1, col2 = st.columns(2)
 
+# ===== PLAYER 1 =====
 with col1:
-    if st.button("😇 Truth", use_container_width=True):
-        st.session_state.current_type = "Truth"
-        st.session_state.current_prompt = random.choice(TRUTHS)
+    st.subheader("👤 Player 1")
+    st.metric("Score", st.session_state.p1_score)
 
-with col2:
-    if st.button("🔥 Dare", use_container_width=True):
-        st.session_state.current_type = "Dare"
-        st.session_state.current_prompt = random.choice(DARES)
+    c1, c2 = st.columns(2)
+    with c1:
+        if st.button("😇 Truth (P1)", use_container_width=True):
+            st.session_state.p1_card = draw_card("Truth")
 
-st.divider()
+    with c2:
+        if st.button("🔥 Dare (P1)", use_container_width=True):
+            st.session_state.p1_card = draw_card("Dare")
 
-# Display Result
-if st.session_state.current_prompt:
-    if st.session_state.current_type == "Truth":
-        st.subheader("😇 Truth Question")
-        st.info(st.session_state.current_prompt)
-    else:
-        st.subheader("🔥 Dare Challenge")
-        st.warning(st.session_state.current_prompt)
-
-# Reset Button
-st.divider()
-if st.button("🔄 Reset"):
-    st.session_state.current_prompt = ""
-    st.session_state.current_type = ""
-
-# Footer
-st.markdown("---")
-st.caption("Built with ❤️ using Streamlit")
+    if st.session_state.p1_card:
+        card = st.session_state.p1_card
+        st.info(f"**{card['text']}**")
+        st.caption(f"Difficulty: {card['difficulty']
