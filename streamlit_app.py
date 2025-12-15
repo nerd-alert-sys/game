@@ -407,5 +407,41 @@ elif st.session_state.current_card is None:
     
     col1, col2 = st.columns(2)
     with col1:
-        # Using callback to draw card
-        st.button("😇 TRUTH", use_container_width=True, type="primary",
+        st.button("😇 TRUTH", use_container_width=True, type="primary", 
+                 on_click=draw_new_card, args=("Truth",))
+    with col2:
+        st.button("😈 DARE", use_container_width=True, type="secondary", 
+                 on_click=draw_new_card, args=("Dare",))
+
+else:
+    # --- CARD REVEAL PHASE ---
+    card = st.session_state.current_card
+    
+    if card['difficulty'] == 'Easy':
+        color, emoji = "#4CAF50", "🌱"
+    elif card['difficulty'] == 'Medium':
+        color, emoji = "#FFA500", "🌶️"
+    else:
+        color, emoji = "#FF0000", "🔥"
+
+    st.markdown(f"""
+    <div style="padding: 20px; border: 2px solid {color}; border-radius: 10px; margin: 20px 0; background-color: #262730;">
+        <h3 style="text-align: center; color: white;">{emoji} {card['difficulty'].upper()} {emoji}</h3>
+        <h2 style="text-align: center; color: white;">{card['text']}</h2>
+        <p style="text-align: center; color: #aaa;">Points: {card['points']}</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    col_success, col_fail = st.columns(2)
+
+    with col_success:
+        st.button("✅ Completed", use_container_width=True, 
+                 on_click=handle_completion, args=(card['points'],))
+
+    with col_fail:
+        st.button("❌ Failed / Refused", use_container_width=True, 
+                 on_click=handle_failure)
+    
+    st.divider()
+    st.subheader(f"📋 {st.session_state.current_type} Card")
+    st.caption(f"Round: {st.session_state.rounds_played} | Difficulty: {card['difficulty']} | Points: {card['points']}")
