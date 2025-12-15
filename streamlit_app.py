@@ -5,7 +5,7 @@ import random
 # Page Configuration
 # -----------------------------
 st.set_page_config(
-    page_title="Truth or Dare - 2 Player",
+    page_title="Truth or Dare",
     page_icon="🎭",
     layout="wide"
 )
@@ -36,8 +36,8 @@ DARES = [
 defaults = {
     "p1_score": 0,
     "p2_score": 0,
-    "p1_card": None,
-    "p2_card": None,
+    "current_player": 1,
+    "current_card": None,
     "rounds_played": 0,
     "game_over": False,
     "winner": None,
@@ -48,12 +48,9 @@ for k, v in defaults.items():
         st.session_state[k] = v
 
 # -----------------------------
-# Difficulty Scaling Logic
+# Difficulty Scaling
 # -----------------------------
 def weighted_cards(cards, rounds):
-    """
-    As rounds increase, Hard cards become more likely
-    """
     weighted = []
     for card in cards:
         if card["difficulty"] == "Easy":
@@ -75,8 +72,17 @@ def draw_card(card_type):
         return weighted_cards(DARES, st.session_state.rounds_played)
 
 # -----------------------------
-# Win Check
+# Game Logic
 # -----------------------------
+def switch_player():
+    st.session_state.current_player = 2 if st.session_state.current_player == 1 else 1
+
+def add_points(points):
+    if st.session_state.current_player == 1:
+        st.session_state.p1_score += points
+    else:
+        st.session_state.p2_score += points
+
 def check_winner():
     if st.session_state.p1_score >= WIN_POINTS:
         st.session_state.game_over = True
@@ -86,94 +92,69 @@ def check_winner():
         st.session_state.winner = "Player 2"
 
 # -----------------------------
-# UI
+# Sidebar (Scoreboard + Controls)
 # -----------------------------
-st.title("🎭 Truth or Dare — 2 Player Challenge")
-st.caption(f"First to **{WIN_POINTS} points** wins 🏆")
+with st.sidebar:
+    st.header("📊 Scoreboard")
+    st.metric("👤 Player 1", st.session_state.p1_score)
+    st.metric("👤 Player 2", st.session_state.p2_score)
+
+    st.divider()
+    st.subheader("🎯 Current Turn")
+    st.write(f"**Player {st.session_state.current_player}**")
+
+    st.divider()
+    if st.button("🔄 Reset Game", use_container_width=True):
+        st.session_state.p1_score = 0
+        st.session_state.p2_score = 0
+        st.session_state.current_card = None
+        st.session_state.current_player = 1
+        st.session_state.game_over = False
+        st.session_state.winner = None
+
+    if st.button("🧹 Master Reset", use_container_width=True):
+        for k, v in defaults.items():
+            st.session_state[k] = v
+
+# -----------------------------
+# Main Panel
+# -----------------------------
+st.title("🎭 Truth or Dare")
+st.caption("Players alternate turns — first to 10 points wins 🏆")
 
 st.divider()
 
-# -----------------------------
 # Winner Announcement
-# -----------------------------
 if st.session_state.game_over:
     loser = "Player 2" if st.session_state.winner == "Player 1" else "Player 1"
     st.success(f"🏆 **{st.session_state.winner} wins!**")
     st.error(f"🍻 **{loser}, take a drink!**")
 
-# -----------------------------
-# Player Panels
-# -----------------------------
-col1, col2 = st.columns(2)
+# Gameplay Area
+if not st.session_state.game_over:
 
-# ===== PLAYER 1 =====
-with col1:
-    st.subheader("👤 Player 1")
-    st.metric("Score", st.session_state.p1_score)
+    st.subheader(f"👤 Player {st.session_state.current_player}'s Turn")
 
-    if not st.session_state.game_over:
-        c1, c2 = st.columns(2)
-        with c1:
-            if st.button("😇 Truth (P1)", use_container_width=True):
-                st.session_state.p1_card = draw_card("Truth")
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("😇 Truth", use_container_width=True):
+            st.session_state.current_card = draw_card("Truth")
 
-        with c2:
-            if st.button("🔥 Dare (P1)", use_container_width=True):
-                st.session_state.p1_card = draw_card("Dare")
+    with col2:
+        if st.button("🔥 Dare", use_container_width=True):
+            st.session_state.current_card = draw_card("Dare")
 
-    if st.session_state.p1_card:
-        card = st.session_state.p1_card
-        st.info(f"**{card['text']}**")
-        st.caption(f"Difficulty: {card['difficulty']} | Points: {card['points']}")
+# Show Card
+if st.session_state.current_card:
+    card = st.session_state.current_card
+    st.info(f"**{card['text']}**")
+    st.caption(f"Difficulty: {card['difficulty']} | Points: {card['points']}")
 
-        if st.button("✅ Completed (P1)"):
-            st.session_state.p1_score += card["points"]
-            st.session_state.p1_card = None
-            check_winner()
-
-# ===== PLAYER 2 =====
-with col2:
-    st.subheader("👤 Player 2")
-    st.metric("Score", st.session_state.p2_score)
-
-    if not st.session_state.game_over:
-        c1, c2 = st.columns(2)
-        with c1:
-            if st.button("😇 Truth (P2)", use_container_width=True):
-                st.session_state.p2_card = draw_card("Truth")
-
-        with c2:
-            if st.button("🔥 Dare (P2)", use_container_width=True):
-                st.session_state.p2_card = draw_card("Dare")
-
-    if st.session_state.p2_card:
-        card = st.session_state.p2_card
-        st.warning(f"**{card['text']}**")
-        st.caption(f"Difficulty: {card['difficulty']} | Points: {card['points']}")
-
-        if st.button("✅ Completed (P2)"):
-            st.session_state.p2_score += card["points"]
-            st.session_state.p2_card = None
-            check_winner()
-
-# -----------------------------
-# Reset Controls
-# -----------------------------
-st.divider()
-col_r1, col_r2 = st.columns(2)
-
-with col_r1:
-    if st.button("🔄 Reset Game"):
-        st.session_state.p1_score = 0
-        st.session_state.p2_score = 0
-        st.session_state.p1_card = None
-        st.session_state.p2_card = None
-        st.session_state.game_over = False
-        st.session_state.winner = None
-
-with col_r2:
-    if st.button("🧹 Master Reset"):
-        for k, v in defaults.items():
-            st.session_state[k] = v
+    if st.button("✅ Completed"):
+        add_points(card["points"])
+        st.session_state.current_card = None
+        check_winner()
+        if not st.session_state.game_over:
+            switch_player()
 
 st.caption("Built with ❤️ using Streamlit")
