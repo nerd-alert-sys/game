@@ -5,14 +5,13 @@ import random
 # Page Configuration
 # -----------------------------
 st.set_page_config(
-    page_title="Truth or Dare: NAN vs ACE",
+    page_title="Truth or Dare",
     page_icon="🔥",
     layout="wide"
 )
 
 # Constants
-WIN_POINTS = 20 # Increased points needed to win since we have more content
-PLAYERS = {1: "NAN", 2: "ACE"}
+WIN_POINTS = 20 
 
 # -----------------------------
 # Game Data (40+ items each)
@@ -32,6 +31,7 @@ TRUTHS = [
     {"text": "What is your guilty pleasure song?", "difficulty": "Easy", "points": 2},
     {"text": "Boxers or briefs (or granny panties)?", "difficulty": "Easy", "points": 1},
     {"text": "Have you ever ghosted someone?", "difficulty": "Easy", "points": 2},
+    {"text": "Who is the messy one in your family?", "difficulty": "Easy", "points": 2},
     
     # --- MEDIUM (4-6 Points) ---
     {"text": "What is the most embarrassing thing you've done in public?", "difficulty": "Medium", "points": 4},
@@ -61,6 +61,7 @@ TRUTHS = [
     {"text": "If you had to sleep with one person from your work/school, who would it be?", "difficulty": "Hard", "points": 9},
     {"text": "What color is your underwear right now? Show proof.", "difficulty": "Hard", "points": 8},
     {"text": "Have you ever sent a nude photo?", "difficulty": "Hard", "points": 8},
+    {"text": "Have you ever hooked up with a stranger?", "difficulty": "Hard", "points": 9},
 ]
 
 DARES = [
@@ -78,6 +79,7 @@ DARES = [
     {"text": "Show the last photo in your camera roll.", "difficulty": "Easy", "points": 2},
     {"text": "Plank for 30 seconds.", "difficulty": "Easy", "points": 3},
     {"text": "Bark like a dog every time you speak for the next minute.", "difficulty": "Easy", "points": 2},
+    {"text": "Drink a glass of water without using your hands.", "difficulty": "Easy", "points": 3},
 
     # --- MEDIUM (4-6 Points) ---
     {"text": "Let the other player go through your phone for 30 seconds.", "difficulty": "Medium", "points": 6},
@@ -107,12 +109,19 @@ DARES = [
     {"text": "Blindfold yourself and let the other player feed you something.", "difficulty": "Hard", "points": 8},
     {"text": "Give a lap dance to the other player.", "difficulty": "Hard", "points": 10},
     {"text": "Perform a striptease (keep underwear on) for 1 minute.", "difficulty": "Hard", "points": 10},
+    {"text": "Let the other player put their hand down your pants for 30 seconds.", "difficulty": "Hard", "points": 10},
 ]
 
 # -----------------------------
 # Session State Initialization
 # -----------------------------
+if "setup_complete" not in st.session_state:
+    st.session_state.setup_complete = False
+
+# Only initialize these if they don't exist
 defaults = {
+    "p1_name": "Player 1",
+    "p2_name": "Player 2",
     "p1_score": 0,
     "p2_score": 0,
     "current_player": 1,
@@ -128,19 +137,41 @@ for k, v in defaults.items():
         st.session_state[k] = v
 
 # -----------------------------
-# Difficulty Scaling Logic
+# SETUP SCREEN
 # -----------------------------
+if not st.session_state.setup_complete:
+    st.title("🔥 Truth or Dare: Setup")
+    st.write("Enter player names to begin!")
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        p1_input = st.text_input("Player 1 Name", value="")
+    with col2:
+        p2_input = st.text_input("Player 2 Name", value="")
+        
+    if st.button("Start Game", type="primary"):
+        if p1_input: st.session_state.p1_name = p1_input
+        if p2_input: st.session_state.p2_name = p2_input
+        st.session_state.setup_complete = True
+        st.rerun()
+        
+    st.stop() # Stop execution here until setup is done
+
+# -----------------------------
+# MAIN GAME LOGIC
+# -----------------------------
+
+# Helper Dictionary for Names (mapped after setup)
+PLAYERS = {1: st.session_state.p1_name, 2: st.session_state.p2_name}
+
 def weighted_cards(cards, rounds):
     weighted = []
     for card in cards:
         if card["difficulty"] == "Easy":
-            # Easy cards become less likely as rounds go up
             weight = max(1, 6 - int(rounds/2))
         elif card["difficulty"] == "Medium":
-            # Medium cards peak in the middle
             weight = 3 + int(rounds/2)
         else:  # Hard
-            # Hard cards become much more likely later
             weight = 1 + int(rounds)
         weighted.extend([card] * weight)
     return random.choice(weighted)
@@ -153,9 +184,6 @@ def draw_card(card_type):
         st.session_state.rounds_played
     )
 
-# -----------------------------
-# Game Logic
-# -----------------------------
 def switch_player():
     st.session_state.current_player = 2 if st.session_state.current_player == 1 else 1
 
@@ -189,7 +217,9 @@ with st.sidebar:
     st.info(f"**{PLAYERS[st.session_state.current_player]}** is playing")
 
     st.divider()
-    if st.button("🔄 Reset Game", use_container_width=True):
+    
+    # SOFT RESET: Keeps names, resets scores
+    if st.button("🔄 Reset Game (Keep Names)", use_container_width=True):
         st.session_state.p1_score = 0
         st.session_state.p2_score = 0
         st.session_state.current_player = 1
@@ -200,10 +230,15 @@ with st.sidebar:
         st.session_state.winner = None
         st.rerun()
 
+    # HARD RESET: Clears everything
+    if st.button("🧹 Change Players (Full Reset)", use_container_width=True):
+        st.session_state.clear()
+        st.rerun()
+
 # -----------------------------
 # Main Panel
 # -----------------------------
-st.title("🔥 Truth or Dare: NAN vs ACE")
+st.title(f"🔥 {PLAYERS[1]} vs {PLAYERS[2]}")
 st.caption(f"Spicy Edition • First to {WIN_POINTS} points wins 🏆")
 
 st.divider()
@@ -222,7 +257,6 @@ if not st.session_state.game_over:
     current_name = PLAYERS[st.session_state.current_player]
     st.subheader(f"🎲 {current_name}'s Turn")
 
-    # Only show draw buttons if no card is currently active
     if st.session_state.current_card is None:
         col1, col2 = st.columns(2)
         with col1:
@@ -239,15 +273,14 @@ if not st.session_state.game_over:
 if st.session_state.current_card:
     card = st.session_state.current_card
     
-    # Visual flair based on difficulty
     if card['difficulty'] == 'Easy':
-        border_color = "green"
+        border_color = "#4CAF50" # Green
         emoji = "🌱"
     elif card['difficulty'] == 'Medium':
-        border_color = "orange"
+        border_color = "#FFA500" # Orange
         emoji = "🌶️"
     else:
-        border_color = "red"
+        border_color = "#FF0000" # Red
         emoji = "🔥"
 
     st.markdown(f"""
@@ -260,7 +293,6 @@ if st.session_state.current_card:
 
     col_success, col_fail = st.columns(2)
 
-    # COMPLETED
     with col_success:
         if st.button("✅ Completed", use_container_width=True):
             add_points(card["points"])
@@ -271,7 +303,6 @@ if st.session_state.current_card:
                 switch_player()
             st.rerun()
 
-    # FAILED
     with col_fail:
         if st.button("❌ Failed / Refused", use_container_width=True):
             st.error(f"👎 Weak! No points for {PLAYERS[st.session_state.current_player]}!")
