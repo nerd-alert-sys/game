@@ -17,6 +17,7 @@ WIN_POINTS = 20
 # Game Data
 # -----------------------------
 TRUTHS = [
+    # Easy Truths (20)
     {"text": "What is your favorite meal?", "difficulty": "Easy", "points": 1},
     {"text": "What is the last movie that made you cry?", "difficulty": "Easy", "points": 2},
     {"text": "Who is your celebrity crush?", "difficulty": "Easy", "points": 2},
@@ -31,18 +32,46 @@ TRUTHS = [
     {"text": "Boxers or briefs (or granny panties)?", "difficulty": "Easy", "points": 1},
     {"text": "Have you ever ghosted someone?", "difficulty": "Easy", "points": 2},
     {"text": "Who is the messy one in your family?", "difficulty": "Easy", "points": 2},
+    {"text": "What's your favorite food you'd never admit to eating?", "difficulty": "Easy", "points": 1},
+    {"text": "Do you talk to yourself when no one is around?", "difficulty": "Easy", "points": 1},
+    {"text": "What's the most childish thing you still enjoy?", "difficulty": "Easy", "points": 2},
+    {"text": "Have you ever cried at a commercial?", "difficulty": "Easy", "points": 1},
+    {"text": "What's your most unpopular opinion?", "difficulty": "Easy", "points": 2},
+    {"text": "What's something you pretend to like but actually hate?", "difficulty": "Easy", "points": 2},
+    
+    # Medium Truths (30)
     {"text": "What is the most embarrassing thing you've done in public?", "difficulty": "Medium", "points": 4},
     {"text": "Have you ever practiced kissing on your hand?", "difficulty": "Medium", "points": 4},
     {"text": "What is the biggest lie you've ever told your parents?", "difficulty": "Medium", "points": 5},
     {"text": "Who in this room would you save first in a zombie apocalypse?", "difficulty": "Medium", "points": 5},
     {"text": "What is the meanest thing you've ever said to someone?", "difficulty": "Medium", "points": 5},
     {"text": "Have you ever picked your nose and ate it?", "difficulty": "Medium", "points": 6},
-    {"text": "What is a secret you’ve kept from your best friend?", "difficulty": "Medium", "points": 6},
+    {"text": "What is a secret you've kept from your best friend?", "difficulty": "Medium", "points": 6},
     {"text": "Have you ever peed in a pool?", "difficulty": "Medium", "points": 4},
     {"text": "What is the most trouble you've ever been in?", "difficulty": "Medium", "points": 5},
     {"text": "Have you ever sent a sext to the wrong person?", "difficulty": "Medium", "points": 6},
     {"text": "When was the last time you wet the bed?", "difficulty": "Medium", "points": 6},
     {"text": "What is the cringiest thing you posted on social media?", "difficulty": "Medium", "points": 4},
+    {"text": "Have you ever lied to someone you love?", "difficulty": "Medium", "points": 5},
+    {"text": "What's something you've done that you regret deeply?", "difficulty": "Medium", "points": 5},
+    {"text": "Have you ever been jealous of a friend?", "difficulty": "Medium", "points": 4},
+    {"text": "What's the worst advice you've ever given?", "difficulty": "Medium", "points": 4},
+    {"text": "Have you ever copied someone's homework?", "difficulty": "Medium", "points": 4},
+    {"text": "What's something you're secretly scared of?", "difficulty": "Medium", "points": 5},
+    {"text": "Have you ever made fun of someone behind their back?", "difficulty": "Medium", "points": 5},
+    {"text": "What's the furthest you've gone with someone you weren't dating?", "difficulty": "Medium", "points": 6},
+    {"text": "Have you ever lied about your age to get into somewhere?", "difficulty": "Medium", "points": 4},
+    {"text": "What's something you do that you think is weird?", "difficulty": "Medium", "points": 4},
+    {"text": "Have you ever cried over a breakup?", "difficulty": "Medium", "points": 4},
+    {"text": "What's the most money you've ever stolen?", "difficulty": "Medium", "points": 5},
+    {"text": "Have you ever pretended to be sick to get out of something?", "difficulty": "Medium", "points": 4},
+    {"text": "What's something you've never told anyone?", "difficulty": "Medium", "points": 6},
+    {"text": "Have you ever hated someone in this room?", "difficulty": "Medium", "points": 5},
+    {"text": "What's the worst thing you've done to a friend?", "difficulty": "Medium", "points": 5},
+    {"text": "Have you ever been caught doing something embarrassing?", "difficulty": "Medium", "points": 4},
+    {"text": "What's something you're addicted to?", "difficulty": "Medium", "points": 4},
+    
+    # Hard Truths (50)
     {"text": "What is your wildest fantasy?", "difficulty": "Hard", "points": 8},
     {"text": "Have you ever had a crush on a friend's partner?", "difficulty": "Hard", "points": 9},
     {"text": "What is the weirdest place you have ever done 'it'?", "difficulty": "Hard", "points": 10},
@@ -52,14 +81,49 @@ TRUTHS = [
     {"text": "Have you ever gone skinny dipping?", "difficulty": "Hard", "points": 7},
     {"text": "What is your favorite body part on the other player?", "difficulty": "Hard", "points": 9},
     {"text": "Have you ever flashed someone?", "difficulty": "Hard", "points": 9},
-    {"text": "What is something you’ve done in bed that you’d never tell your parents?", "difficulty": "Hard", "points": 10},
+    {"text": "What is something you've done in bed that you'd never tell your parents?", "difficulty": "Hard", "points": 10},
     {"text": "If you had to sleep with one person from your work/school, who would it be?", "difficulty": "Hard", "points": 9},
     {"text": "What color is your underwear right now? Show proof.", "difficulty": "Hard", "points": 8},
     {"text": "Have you ever sent a nude photo?", "difficulty": "Hard", "points": 8},
     {"text": "Have you ever hooked up with a stranger?", "difficulty": "Hard", "points": 9},
+    {"text": "What's something sexual you've thought about?", "difficulty": "Hard", "points": 8},
+    {"text": "Have you ever been in love with someone you shouldn't have?", "difficulty": "Hard", "points": 9},
+    {"text": "What's the kinkiest thing you've done?", "difficulty": "Hard", "points": 10},
+    {"text": "Have you ever lied about sexual experience?", "difficulty": "Hard", "points": 8},
+    {"text": "What's your biggest insecurity?", "difficulty": "Hard", "points": 9},
+    {"text": "Have you ever cheated on someone?", "difficulty": "Hard", "points": 9},
+    {"text": "What's the most selfish thing you've ever done?", "difficulty": "Hard", "points": 8},
+    {"text": "Have you ever betrayed a friend's trust?", "difficulty": "Hard", "points": 9},
+    {"text": "What's something you've done that you're deeply ashamed of?", "difficulty": "Hard", "points": 10},
+    {"text": "Have you ever used someone for something?", "difficulty": "Hard", "points": 9},
+    {"text": "What's a dark thought you've had?", "difficulty": "Hard", "points": 8},
+    {"text": "Have you ever done something illegal with a friend?", "difficulty": "Hard", "points": 9},
+    {"text": "What's the worst lie you've told a partner?", "difficulty": "Hard", "points": 10},
+    {"text": "Have you ever watched something you shouldn't have?", "difficulty": "Hard", "points": 8},
+    {"text": "What would you do for a large amount of money?", "difficulty": "Hard", "points": 9},
+    {"text": "Have you ever fantasized about someone in this room?", "difficulty": "Hard", "points": 10},
+    {"text": "What's something you do in private you'd never admit?", "difficulty": "Hard", "points": 9},
+    {"text": "Have you ever considered being with the same gender?", "difficulty": "Hard", "points": 8},
+    {"text": "What's the most violent thought you've had?", "difficulty": "Hard", "points": 9},
+    {"text": "Have you ever stolen from someone you love?", "difficulty": "Hard", "points": 9},
+    {"text": "What's something you've googled that embarrasses you?", "difficulty": "Hard", "points": 8},
+    {"text": "Have you ever faked an orgasm?", "difficulty": "Hard", "points": 8},
+    {"text": "What's your biggest turn-on?", "difficulty": "Hard", "points": 9},
+    {"text": "Have you ever spied on someone?", "difficulty": "Hard", "points": 9},
+    {"text": "What's the worst thing you've thought about someone here?", "difficulty": "Hard", "points": 10},
+    {"text": "Have you ever wanted someone else's partner?", "difficulty": "Hard", "points": 9},
+    {"text": "What's something you've done that could destroy your reputation?", "difficulty": "Hard", "points": 10},
+    {"text": "Have you ever been attracted to someone you shouldn't be?", "difficulty": "Hard", "points": 8},
+    {"text": "What's the worst rejection you've experienced?", "difficulty": "Hard", "points": 9},
+    {"text": "Have you ever looked through someone's phone?", "difficulty": "Hard", "points": 9},
+    {"text": "What's something you want but feel guilty for wanting?", "difficulty": "Hard", "points": 9},
+    {"text": "Have you ever wished harm on someone?", "difficulty": "Hard", "points": 9},
+    {"text": "What's the most painful secret you're keeping?", "difficulty": "Hard", "points": 10},
+    {"text": "Have you ever done something you'd never want anyone to know?", "difficulty": "Hard", "points": 10},
 ]
 
 DARES = [
+    # Easy Dares (20)
     {"text": "Do 10 push-ups.", "difficulty": "Easy", "points": 2},
     {"text": "Sing the chorus of a pop song loudly.", "difficulty": "Easy", "points": 2},
     {"text": "Talk in a British accent until your next turn.", "difficulty": "Easy", "points": 3},
@@ -74,6 +138,14 @@ DARES = [
     {"text": "Plank for 30 seconds.", "difficulty": "Easy", "points": 3},
     {"text": "Bark like a dog every time you speak for the next minute.", "difficulty": "Easy", "points": 2},
     {"text": "Drink a glass of water without using your hands.", "difficulty": "Easy", "points": 3},
+    {"text": "Do a handstand against a wall.", "difficulty": "Easy", "points": 2},
+    {"text": "Speak in a pirate accent for 2 minutes.", "difficulty": "Easy", "points": 2},
+    {"text": "Do 15 jumping jacks.", "difficulty": "Easy", "points": 1},
+    {"text": "Yodel as loud as you can.", "difficulty": "Easy", "points": 2},
+    {"text": "Do a silly dance for 30 seconds.", "difficulty": "Easy", "points": 3},
+    {"text": "Touch your toes for 10 seconds without bending your knees.", "difficulty": "Easy", "points": 1},
+    
+    # Medium Dares (30)
     {"text": "Let the other player go through your phone for 30 seconds.", "difficulty": "Medium", "points": 6},
     {"text": "Eat a spoonful of hot sauce or mustard.", "difficulty": "Medium", "points": 5},
     {"text": "Dance without music for 1 minute.", "difficulty": "Medium", "points": 4},
@@ -86,6 +158,26 @@ DARES = [
     {"text": "Do a cartwheel (or attempt one).", "difficulty": "Medium", "points": 4},
     {"text": "Let the other player give you a wedgie.", "difficulty": "Medium", "points": 5},
     {"text": "Walk like a crab to the other side of the room.", "difficulty": "Medium", "points": 4},
+    {"text": "Recite the alphabet backwards.", "difficulty": "Medium", "points": 4},
+    {"text": "Imitate the other player's walk for 1 minute.", "difficulty": "Medium", "points": 5},
+    {"text": "Call someone and tell them a joke.", "difficulty": "Medium", "points": 5},
+    {"text": "Do a runway walk across the room.", "difficulty": "Medium", "points": 4},
+    {"text": "Eat something spicy and describe the flavor.", "difficulty": "Medium", "points": 5},
+    {"text": "Let the other player take a selfie with you in a weird pose.", "difficulty": "Medium", "points": 4},
+    {"text": "Whisper a secret into the other player's ear.", "difficulty": "Medium", "points": 5},
+    {"text": "Do an impression of a celebrity.", "difficulty": "Medium", "points": 4},
+    {"text": "Text your crush something nice (dictated by the other player).", "difficulty": "Medium", "points": 6},
+    {"text": "Do a slow-motion walk for 1 minute.", "difficulty": "Medium", "points": 4},
+    {"text": "Lick your elbow (attempt it).", "difficulty": "Medium", "points": 3},
+    {"text": "Let the other player tie your shoes together.", "difficulty": "Medium", "points": 4},
+    {"text": "Compliment the other player for 1 minute straight.", "difficulty": "Medium", "points": 5},
+    {"text": "Do the worm on the floor.", "difficulty": "Medium", "points": 5},
+    {"text": "Sniff the other player's armpit.", "difficulty": "Medium", "points": 4},
+    {"text": "Do 20 burpees.", "difficulty": "Medium", "points": 4},
+    {"text": "Let the other player put lipstick on you.", "difficulty": "Medium", "points": 5},
+    {"text": "Sing a love song to the other player.", "difficulty": "Medium", "points": 5},
+    
+    # Hard Dares (50)
     {"text": "Give the other player a sensual massage for 2 minutes.", "difficulty": "Hard", "points": 9},
     {"text": "Twerk for 30 seconds.", "difficulty": "Hard", "points": 8},
     {"text": "Let the other player kiss you anywhere they want (face/neck).", "difficulty": "Hard", "points": 10},
@@ -100,7 +192,47 @@ DARES = [
     {"text": "Give a lap dance to the other player.", "difficulty": "Hard", "points": 10},
     {"text": "Perform a striptease (keep underwear on) for 1 minute.", "difficulty": "Hard", "points": 10},
     {"text": "Let the other player put their hand down your pants for 30 seconds.", "difficulty": "Hard", "points": 10},
+    {"text": "Kiss the other player on the lips for 10 seconds.", "difficulty": "Hard", "points": 10},
+    {"text": "Let the other player control your phone for 1 minute.", "difficulty": "Hard", "points": 9},
+    {"text": "Post a selfie in your underwear on your story (delete after 5 mins).", "difficulty": "Hard", "points": 10},
+    {"text": "Tell the group your biggest secret.", "difficulty": "Hard", "points": 9},
+    {"text": "Give the other player a body massage with oil.", "difficulty": "Hard", "points": 9},
+    {"text": "Let the other player choose an embarrassing video for you to watch.", "difficulty": "Hard", "points": 8},
+    {"text": "Flirt heavily with the other player for 2 minutes.", "difficulty": "Hard", "points": 9},
+    {"text": "Take a suggestive photo with the other player.", "difficulty": "Hard", "points": 10},
+    {"text": "Call someone and confess your feelings (or tell a made-up confession).", "difficulty": "Hard", "points": 9},
+    {"text": "Do a handstand for 30 seconds.", "difficulty": "Hard", "points": 8},
+    {"text": "Let the other player choose what you eat.", "difficulty": "Hard", "points": 7},
+    {"text": "Dance seductively to a song of the other player's choice.", "difficulty": "Hard", "points": 9},
+    {"text": "Let the other player wax a small part of your arm/leg.", "difficulty": "Hard", "points": 10},
+    {"text": "Take a bath/shower with the other player (swimsuit only).", "difficulty": "Hard", "points": 10},
+    {"text": "Let the other player dye a small streak of your hair.", "difficulty": "Hard", "points": 9},
+    {"text": "Propose to the other player dramatically.", "difficulty": "Hard", "points": 8},
+    {"text": "Let the other player take a video of you doing something embarrassing.", "difficulty": "Hard", "points": 9},
+    {"text": "Kiss the other player passionately for 15 seconds.", "difficulty": "Hard", "points": 10},
+    {"text": "Let the other player be your slave for the next round.", "difficulty": "Hard", "points": 9},
+    {"text": "Do a photoshoot in lingerie (keep it tasteful).", "difficulty": "Hard", "points": 10},
+    {"text": "Send a voice message saying something flirty to the other player.", "difficulty": "Hard", "points": 8},
+    {"text": "Let the other player give you a lap dance.", "difficulty": "Hard", "points": 9},
+    {"text": "Take off all your clothes except underwear for a photo.", "difficulty": "Hard", "points": 10},
+    {"text": "Let the other player put makeup on you however they want.", "difficulty": "Hard", "points": 8},
+    {"text": "Answer the next truth question completely honestly no matter what.", "difficulty": "Hard", "points": 9},
+    {"text": "Let the other player control your outfit for the next 2 rounds.", "difficulty": "Hard", "points": 9},
+    {"text": "Simulate a kiss with the other player (no lip contact).", "difficulty": "Hard", "points": 8},
+    {"text": "Do 50 push-ups.", "difficulty": "Hard", "points": 7},
+    {"text": "Let the other player blindfold you and touch you anywhere (clothed).", "difficulty": "Hard", "points": 9},
+    {"text": "Create a TikTok dance with the other player.", "difficulty": "Hard", "points": 8},
+    {"text": "Let the other player choose your hairstyle for the day.", "difficulty": "Hard", "points": 8},
+    {"text": "Compliment the other player's body for 1 minute non-stop.", "difficulty": "Hard", "points": 9},
+    {"text": "Let the other player take a suggestive photo of you.", "difficulty": "Hard", "points": 10},
+    {"text": "Serenade the other player in your underwear.", "difficulty": "Hard", "points": 10},
+    {"text": "Let the other player pierce your ear temporarily.", "difficulty": "Hard", "points": 8},
+    {"text": "Write a romantic love letter to the other player.", "difficulty": "Hard", "points": 9},
 ]
+
+# Verify we have 100 total
+assert len(TRUTHS) == 50, f"Expected 50 truths, got {len(TRUTHS)}"
+assert len(DARES) == 50, f"Expected 50 dares, got {len(DARES)}"
 
 # -----------------------------
 # Session State Initialization
@@ -152,11 +284,11 @@ def get_random_card(card_type, rounds):
     for i in available_indices:
         card = source_list[i]
         if card["difficulty"] == "Easy":
-            weight = max(1, 6 - int(rounds/2))
+            weight = max(1, 5 - int(rounds/3))
         elif card["difficulty"] == "Medium":
-            weight = 3 + int(rounds/2)
+            weight = 3 + int(rounds/4)
         else:
-            weight = 1 + int(rounds)
+            weight = 1 + int(rounds/2)
         weighted_indices.extend([i] * weight)
 
     selected_index = random.choice(weighted_indices)
@@ -231,6 +363,9 @@ with st.sidebar:
     st.divider()
     st.subheader("🎯 Current Turn")
     st.info(f"**{PLAYERS[st.session_state.current_player]}** is playing")
+    
+    st.subheader("🔢 Round Counter")
+    st.metric("Round", st.session_state.rounds_played)
 
     st.divider()
     
@@ -268,43 +403,9 @@ if st.session_state.game_over:
 elif st.session_state.current_card is None:
     # --- CARD SELECTION PHASE ---
     current_name = PLAYERS[st.session_state.current_player]
-    st.subheader(f"🎲 {current_name}'s Turn")
+    st.subheader(f"🎲 {current_name}'s Turn (Round {st.session_state.rounds_played + 1})")
     
     col1, col2 = st.columns(2)
     with col1:
         # Using callback to draw card
-        st.button("😇 TRUTH", use_container_width=True, type="primary", 
-                 on_click=draw_new_card, args=("Truth",))
-    with col2:
-        st.button("😈 DARE", use_container_width=True, type="secondary", 
-                 on_click=draw_new_card, args=("Dare",))
-
-else:
-    # --- CARD REVEAL PHASE ---
-    card = st.session_state.current_card
-    
-    if card['difficulty'] == 'Easy':
-        color, emoji = "#4CAF50", "🌱"
-    elif card['difficulty'] == 'Medium':
-        color, emoji = "#FFA500", "🌶️"
-    else:
-        color, emoji = "#FF0000", "🔥"
-
-    st.markdown(f"""
-    <div style="padding: 20px; border: 2px solid {color}; border-radius: 10px; margin: 20px 0; background-color: #262730;">
-        <h3 style="text-align: center; color: white;">{emoji} {card['difficulty'].upper()} {emoji}</h3>
-        <h2 style="text-align: center; color: white;">{card['text']}</h2>
-        <p style="text-align: center; color: #aaa;">Points: {card['points']}</p>
-    </div>
-    """, unsafe_allow_html=True)
-
-    col_success, col_fail = st.columns(2)
-
-    with col_success:
-        # KEY FIX: Using on_click to ensure points add BEFORE screen refresh
-        st.button("✅ Completed", use_container_width=True, 
-                 on_click=handle_completion, args=(card['points'],))
-
-    with col_fail:
-        st.button("❌ Failed / Refused", use_container_width=True, 
-                 on_click=handle_failure)
+        st.button("😇 TRUTH", use_container_width=True, type="primary",
