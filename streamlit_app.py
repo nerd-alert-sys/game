@@ -14,7 +14,7 @@ st.set_page_config(
 WIN_POINTS = 20 
 
 # -----------------------------
-# Game Data (40+ items each)
+# Game Data
 # -----------------------------
 TRUTHS = [
     # --- EASY (1-3 Points) ---
@@ -130,6 +130,9 @@ defaults = {
     "rounds_played": 0,
     "game_over": False,
     "winner": None,
+    # SETS TO STORE INDICES OF USED CARDS
+    "used_truths": set(),
+    "used_dares": set(),
 }
 
 for k, v in defaults.items():
@@ -164,25 +167,53 @@ if not st.session_state.setup_complete:
 # Helper Dictionary for Names (mapped after setup)
 PLAYERS = {1: st.session_state.p1_name, 2: st.session_state.p2_name}
 
-def weighted_cards(cards, rounds):
-    weighted = []
-    for card in cards:
+def get_random_card(card_type, rounds):
+    """
+    Selects a random card based on difficulty weights.
+    Ensures cards are not repeated until the deck is exhausted.
+    """
+    # 1. Determine Source and History based on type
+    if card_type == "Truth":
+        source_list = TRUTHS
+        used_set = st.session_state.used_truths
+    else:
+        source_list = DARES
+        used_set = st.session_state.used_dares
+
+    # 2. Filter available indices
+    available_indices = [i for i in range(len(source_list)) if i not in used_set]
+
+    # 3. Handle Empty Deck (Auto Reshuffle)
+    if not available_indices:
+        st.toast(f"🔄 All {card_type}s used! Reshuffling deck...", icon="🃏")
+        used_set.clear()
+        available_indices = list(range(len(source_list)))
+
+    # 4. Create Weighted List of INDICES (not objects)
+    weighted_indices = []
+    for i in available_indices:
+        card = source_list[i]
+        
+        # Difficulty Weighting Logic
         if card["difficulty"] == "Easy":
             weight = max(1, 6 - int(rounds/2))
         elif card["difficulty"] == "Medium":
             weight = 3 + int(rounds/2)
         else:  # Hard
             weight = 1 + int(rounds)
-        weighted.extend([card] * weight)
-    return random.choice(weighted)
+            
+        weighted_indices.extend([i] * weight)
+
+    # 5. Select Index and Add to Used History
+    selected_index = random.choice(weighted_indices)
+    used_set.add(selected_index)
+    
+    return source_list[selected_index]
 
 def draw_card(card_type):
     st.session_state.rounds_played += 1
     st.session_state.current_type = card_type
-    return weighted_cards(
-        TRUTHS if card_type == "Truth" else DARES,
-        st.session_state.rounds_played
-    )
+    return get_random_card(card_type, st.session_state.rounds_played)
 
 def switch_player():
     st.session_state.current_player = 2 if st.session_state.current_player == 1 else 1
@@ -218,7 +249,7 @@ with st.sidebar:
 
     st.divider()
     
-    # SOFT RESET: Keeps names, resets scores
+    # SOFT RESET: Keeps names AND used history (so you don't repeat immediately)
     if st.button("🔄 Reset Game (Keep Names)", use_container_width=True):
         st.session_state.p1_score = 0
         st.session_state.p2_score = 0
@@ -228,12 +259,17 @@ with st.sidebar:
         st.session_state.rounds_played = 0
         st.session_state.game_over = False
         st.session_state.winner = None
+        # Note: We do NOT clear st.session_state.used_truths/dares here
+        # to prevent repeats across sequential games.
         st.rerun()
 
-    # HARD RESET: Clears everything
-    if st.button("🧹 Change Players (Full Reset)", use_container_width=True):
+    # MASTER RESET: Clears everything
+    if st.button("🧹 Master Reset (New Players)", use_container_width=True, type="primary"):
         st.session_state.clear()
         st.rerun()
+        
+    if (len(st.session_state.used_truths) + len(st.session_state.used_dares)) > 0:
+        st.caption(f"Cards used: {len(st.session_state.used_truths)} Truths, {len(st.session_state.used_dares)} Dares")
 
 # -----------------------------
 # Main Panel
@@ -311,4 +347,4 @@ if st.session_state.current_card:
             st.rerun()
 
 st.divider()
-st.caption("Game logic scales difficulty: The longer you play, the spicier it gets.")
+st.caption("Cards will not repeat until the deck is exhausted or a Master Reset is performed.")
