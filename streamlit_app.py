@@ -66,10 +66,10 @@ def weighted_cards(cards, rounds):
 def draw_card(card_type):
     st.session_state.rounds_played += 1
     st.session_state.current_type = card_type
-    if card_type == "Truth":
-        return weighted_cards(TRUTHS, st.session_state.rounds_played)
-    else:
-        return weighted_cards(DARES, st.session_state.rounds_played)
+    return weighted_cards(
+        TRUTHS if card_type == "Truth" else DARES,
+        st.session_state.rounds_played
+    )
 
 # -----------------------------
 # Game Logic
@@ -152,7 +152,7 @@ if st.session_state.current_card:
 
     col_success, col_fail = st.columns(2)
 
-    # COMPLETE
+    # COMPLETED
     with col_success:
         if st.button("✅ Completed", use_container_width=True):
             add_points(card["points"])
@@ -163,13 +163,12 @@ if st.session_state.current_card:
             if not st.session_state.game_over:
                 switch_player()
 
-    # FAIL (only for dares)
-    if st.session_state.current_type == "Dare":
-        with col_fail:
-            if st.button("❌ Failed", use_container_width=True):
-                st.error("👎 BOOO! Challenge failed!")
-                st.toast("👎 No points for you!", icon="👎")
-                st.session_state.current_card = None
-                switch_player()
+    # FAILED (NOW FOR BOTH TRUTH & DARE)
+    with col_fail:
+        if st.button("❌ Failed", use_container_width=True):
+            st.error("👎 BOOO! Challenge failed!")
+            st.toast("👎 No points awarded!", icon="👎")
+            st.session_state.current_card = None
+            switch_player()
 
 st.caption("Built with ❤️ using Streamlit")
