@@ -86,18 +86,18 @@ def add_points(points):
 def check_winner():
     if st.session_state.p1_score >= WIN_POINTS:
         st.session_state.game_over = True
-        st.session_state.winner = "Player 1"
+        st.session_state.winner = "NAN"
     elif st.session_state.p2_score >= WIN_POINTS:
         st.session_state.game_over = True
-        st.session_state.winner = "Player 2"
+        st.session_state.winner = "ACE"
 
 # -----------------------------
 # Sidebar
 # -----------------------------
 with st.sidebar:
     st.header("📊 Scoreboard")
-    st.metric("👤 Player 1", st.session_state.p1_score)
-    st.metric("👤 Player 2", st.session_state.p2_score)
+    st.metric("👤 NAN", st.session_state.p1_score)
+    st.metric("👤 ACE", st.session_state.p2_score)
 
     st.divider()
     st.subheader("🎯 Current Turn")
@@ -127,7 +127,7 @@ st.divider()
 
 # Winner
 if st.session_state.game_over:
-    loser = "Player 2" if st.session_state.winner == "Player 1" else "Player 1"
+    loser = "ACE" if st.session_state.winner == "NAN" else "NAN"
     st.success(f"🏆 **{st.session_state.winner} wins!**")
     st.error(f"🍻 **{loser}, take a drink!**")
 
@@ -172,3 +172,4 @@ if st.session_state.current_card:
             switch_player()
 
 st.caption("Built with ❤️ using Streamlit")
+
