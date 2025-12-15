@@ -78,4 +78,43 @@ with col1:
     if st.session_state.p1_card:
         card = st.session_state.p1_card
         st.info(f"**{card['text']}**")
-        st.caption(f"Difficulty: {card['difficulty']
+        st.caption(f"Difficulty: {card['difficulty']} | Points: {card['points']}")
+
+        if st.button("✅ Completed (P1)"):
+            st.session_state.p1_score += card["points"]
+            st.session_state.p1_card = None
+
+# ===== PLAYER 2 =====
+with col2:
+    st.subheader("👤 Player 2")
+    st.metric("Score", st.session_state.p2_score)
+
+    c1, c2 = st.columns(2)
+    with c1:
+        if st.button("😇 Truth (P2)", use_container_width=True):
+            st.session_state.p2_card = draw_card("Truth")
+
+    with c2:
+        if st.button("🔥 Dare (P2)", use_container_width=True):
+            st.session_state.p2_card = draw_card("Dare")
+
+    if st.session_state.p2_card:
+        card = st.session_state.p2_card
+        st.warning(f"**{card['text']}**")
+        st.caption(f"Difficulty: {card['difficulty']} | Points: {card['points']}")
+
+        if st.button("✅ Completed (P2)"):
+            st.session_state.p2_score += card["points"]
+            st.session_state.p2_card = None
+
+# -----------------------------
+# Reset Game
+# -----------------------------
+st.divider()
+if st.button("🔄 Reset Game"):
+    st.session_state.p1_score = 0
+    st.session_state.p2_score = 0
+    st.session_state.p1_card = None
+    st.session_state.p2_card = None
+
+st.caption("Built with ❤️ using Streamlit")
