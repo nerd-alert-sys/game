@@ -38,6 +38,7 @@ defaults = {
     "p2_score": 0,
     "current_player": 1,
     "current_card": None,
+    "current_type": None,
     "rounds_played": 0,
     "game_over": False,
     "winner": None,
@@ -59,13 +60,12 @@ def weighted_cards(cards, rounds):
             weight = 3 + rounds
         else:  # Hard
             weight = 1 + rounds * 2
-
         weighted.extend([card] * weight)
-
     return random.choice(weighted)
 
 def draw_card(card_type):
     st.session_state.rounds_played += 1
+    st.session_state.current_type = card_type
     if card_type == "Truth":
         return weighted_cards(TRUTHS, st.session_state.rounds_played)
     else:
@@ -92,7 +92,7 @@ def check_winner():
         st.session_state.winner = "Player 2"
 
 # -----------------------------
-# Sidebar (Scoreboard + Controls)
+# Sidebar
 # -----------------------------
 with st.sidebar:
     st.header("📊 Scoreboard")
@@ -107,8 +107,9 @@ with st.sidebar:
     if st.button("🔄 Reset Game", use_container_width=True):
         st.session_state.p1_score = 0
         st.session_state.p2_score = 0
-        st.session_state.current_card = None
         st.session_state.current_player = 1
+        st.session_state.current_card = None
+        st.session_state.current_type = None
         st.session_state.game_over = False
         st.session_state.winner = None
 
@@ -124,15 +125,14 @@ st.caption("Players alternate turns — first to 10 points wins 🏆")
 
 st.divider()
 
-# Winner Announcement
+# Winner
 if st.session_state.game_over:
     loser = "Player 2" if st.session_state.winner == "Player 1" else "Player 1"
     st.success(f"🏆 **{st.session_state.winner} wins!**")
     st.error(f"🍻 **{loser}, take a drink!**")
 
-# Gameplay Area
+# Gameplay
 if not st.session_state.game_over:
-
     st.subheader(f"👤 Player {st.session_state.current_player}'s Turn")
 
     col1, col2 = st.columns(2)
@@ -144,17 +144,32 @@ if not st.session_state.game_over:
         if st.button("🔥 Dare", use_container_width=True):
             st.session_state.current_card = draw_card("Dare")
 
-# Show Card
+# Card Display
 if st.session_state.current_card:
     card = st.session_state.current_card
     st.info(f"**{card['text']}**")
     st.caption(f"Difficulty: {card['difficulty']} | Points: {card['points']}")
 
-    if st.button("✅ Completed"):
-        add_points(card["points"])
-        st.session_state.current_card = None
-        check_winner()
-        if not st.session_state.game_over:
-            switch_player()
+    col_success, col_fail = st.columns(2)
+
+    # COMPLETE
+    with col_success:
+        if st.button("✅ Completed", use_container_width=True):
+            add_points(card["points"])
+            st.balloons()
+            st.toast("🎉 Challenge completed! Points awarded!", icon="🎉")
+            st.session_state.current_card = None
+            check_winner()
+            if not st.session_state.game_over:
+                switch_player()
+
+    # FAIL (only for dares)
+    if st.session_state.current_type == "Dare":
+        with col_fail:
+            if st.button("❌ Failed", use_container_width=True):
+                st.error("👎 BOOO! Challenge failed!")
+                st.toast("👎 No points for you!", icon="👎")
+                st.session_state.current_card = None
+                switch_player()
 
 st.caption("Built with ❤️ using Streamlit")
